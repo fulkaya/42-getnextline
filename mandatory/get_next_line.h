@@ -6,7 +6,7 @@
 /*   By: fulkaya <fulkaya@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 19:15:11 by fulkaya           #+#    #+#             */
-/*   Updated: 2026/04/15 22:40:32 by fulkaya          ###   ########.fr       */
+/*   Updated: 2026/04/16 04:43:03 by fulkaya          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,20 @@
 
 # endif
 
+typedef struct s_line
+{
+	char		*buffer;
+	char		*result;
+	char		*temp;
+	int			i;
+	int			j;
+	ssize_t		readed;
+}	t_line;
+
 char	*ft_strjoin(char *str1, char *str2);
 char	*ft_strchr(char *s, int c);
 char	*ft_strdup(char *s);
+char	*get_next_line(int fd);
 
 int		ft_strlen(char *str);
 int		ft_strchr2(char *s, int c);

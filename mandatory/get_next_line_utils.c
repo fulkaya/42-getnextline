@@ -6,21 +6,11 @@
 /*   By: fulkaya <fulkaya@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 19:49:30 by fulkaya           #+#    #+#             */
-/*   Updated: 2026/04/16 01:22:01 by fulkaya          ###   ########.fr       */
+/*   Updated: 2026/04/16 04:17:37 by fulkaya          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
 
 char	*ft_strchr(char *s, int c)
 {
@@ -54,62 +44,28 @@ int	ft_strchr2(char *s, int c)
 	return (-1);
 }
 
-int	ft_strlcpy(char *dst, char *src, int size)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	int	i;
-	int	src_len;
+	char	*res;
+	int		i;
+	int		j;
 
-	src_len = ft_strlen(src);
-	if (size == 0)
-		return (src_len);
+	if (!s1 || !s2)
+		return (NULL);
+	res = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!res)
+		return (NULL);
 	i = 0;
-	while (src[i] && i < (size - 1))
+	while (s1[i])
 	{
-		dst[i] = src[i];
+		res[i] = s1[i];
 		i++;
 	}
-	dst[i] = '\0';
-	return (src_len);
-}
-
-int	ft_strlcat(char *dst, char *src, int size)
-{
-	int	i;
-	int	dst_len;
-	int	src_len;
-
-	dst_len = ft_strlen(dst);
-	src_len = ft_strlen(src);
-	i = 0;
-	if (size == 0)
-		return (src_len);
-	if (dst_len >= size)
-		return (src_len + size);
-	while (src[i] && (dst_len + i) < size - 1)
-	{
-		dst[dst_len + i] = src[i];
-		i++;
-	}
-	dst[dst_len + i] = '\0';
-	return (dst_len + src_len);
-}
-
-char	*ft_strjoin(char *str1, char *str2)
-{
-	char	*result;
-	int		len;
-	int		len2;
-
-	if (!str1 || !str2)
-		return (NULL);
-	len = ft_strlen(str1);
-	len2 = ft_strlen(str2);
-	result = malloc(len + len2);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, str1, len + 1);
-	ft_strlcat(result, str2, len + len2 + 1);
-	return (result);
+	j = 0;
+	while (s2[j])
+		res[i++] = s2[j++];
+	res[i] = '\0';
+	return (res);
 }
 
 void	*ft_memcpy(void *dest, void *src, int n)
