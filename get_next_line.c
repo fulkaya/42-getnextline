@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fulkaya <fulkaya@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 17:28:20 by fulkaya           #+#    #+#             */
-/*   Updated: 2026/04/16 05:21:55 by fulkaya          ###   ########.fr       */
+/*   Updated: 2026/04/18 16:09:46 by fulkaya          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 int	ft_strlen(char *str)
 {
@@ -67,29 +67,51 @@ char	*helper3(char **stash, t_line *t)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash[MAX_FD];
+	static char	*stash;
 	t_line		t;
 
-	if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
-		return (NULL);
-	t = (t_line){NULL, NULL, NULL, 0, 0, 1};
+	t.i = 0;
+	t.j = 0;
+	t.readed = 1;
 	t.buffer = malloc(BUFFER_SIZE + 1);
 	if (!t.buffer)
 		return (NULL);
 	while (t.readed > 0)
 	{
-		helper2(fd, &stash[fd], &t);
+		helper2(fd, &stash, &t);
 		if (t.readed == -1)
 		{
 			free(t.buffer);
-			free(stash[fd]);
-			return (stash[fd] = NULL);
+			free(stash);
+			return (NULL);
 		}
-		if (ft_strchr(stash[fd], '\n') != NULL)
+		if (ft_strchr(stash, '\n') != NULL)
 		{
-			t.result = malloc(ft_strchr2(stash[fd], '\n') + 2);
-			return (helper(&stash[fd], &t));
+			t.result = malloc(ft_strchr2(stash, '\n') + 2);
+			return (helper(&stash, &t));
 		}
 	}
-	return (helper3(&stash[fd], &t));
+	return (helper3(&stash, &t));
+}
+
+#include <stdio.h>
+#include <fcntl.h>
+
+int	main(void)
+{
+	char	*str;
+	int		fd;
+
+	fd = open("test.txt", O_RDWR);
+	if (fd == -1)
+		return (1);
+	str = get_next_line(fd);
+	while (str != NULL)
+	{
+		printf("%s", str);
+		free(str);
+		str = get_next_line(fd);
+	}
+	close(fd);
+	return (0);
 }

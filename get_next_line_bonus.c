@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fulkaya <fulkaya@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 17:28:20 by fulkaya           #+#    #+#             */
-/*   Updated: 2026/04/16 05:16:37 by fulkaya          ###   ########.fr       */
+/*   Updated: 2026/04/18 16:09:48 by fulkaya          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlen(char *str)
 {
@@ -67,29 +67,63 @@ char	*helper3(char **stash, t_line *t)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[MAX_FD];
 	t_line		t;
 
-	t.i = 0;
-	t.j = 0;
-	t.readed = 1;
+	if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
+		return (NULL);
+	t = (t_line){NULL, NULL, NULL, 0, 0, 1};
 	t.buffer = malloc(BUFFER_SIZE + 1);
 	if (!t.buffer)
 		return (NULL);
 	while (t.readed > 0)
 	{
-		helper2(fd, &stash, &t);
+		helper2(fd, &stash[fd], &t);
 		if (t.readed == -1)
 		{
 			free(t.buffer);
-			free(stash);
-			return (NULL);
+			free(stash[fd]);
+			return (stash[fd] = NULL);
 		}
-		if (ft_strchr(stash, '\n') != NULL)
+		if (ft_strchr(stash[fd], '\n') != NULL)
 		{
-			t.result = malloc(ft_strchr2(stash, '\n') + 2);
-			return (helper(&stash, &t));
+			t.result = malloc(ft_strchr2(stash[fd], '\n') + 2);
+			return (helper(&stash[fd], &t));
 		}
 	}
-	return (helper3(&stash, &t));
+	return (helper3(&stash[fd], &t));
+}
+
+#include <stdio.h>
+#include <fcntl.h>
+
+int	main(void)
+{
+	char	*f1;
+	char	*f2;
+	int		fd1;
+	int		fd2;
+
+	fd1 = open("test.txt", O_RDONLY);
+	fd2 = open("test2.txt", O_RDONLY);
+	f1 = get_next_line(fd1);
+	f2 = get_next_line(fd2);
+	while (f1 != NULL || f2 != NULL)
+	{
+		if (f1)
+		{
+			printf("Dosya-1: %s", f1);
+			free(f1);
+			f1 = get_next_line(fd1);
+		}
+		if (f2)
+		{
+			printf("Dosya-2: %s", f2);
+			free(f2);
+			f2 = get_next_line(fd2);
+		}
+	}
+	close(fd1);
+	close(fd2);
+	return (0);
 }
