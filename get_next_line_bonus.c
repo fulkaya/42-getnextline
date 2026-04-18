@@ -93,37 +93,3 @@ char	*get_next_line(int fd)
 	}
 	return (helper3(&stash[fd], &t));
 }
-
-#include <stdio.h>
-#include <fcntl.h>
-
-int	main(void)
-{
-	char	*f1;
-	char	*f2;
-	int		fd1;
-	int		fd2;
-
-	fd1 = open("test.txt", O_RDONLY);
-	fd2 = open("test2.txt", O_RDONLY);
-	f1 = get_next_line(fd1);
-	f2 = get_next_line(fd2);
-	while (f1 != NULL || f2 != NULL)
-	{
-		if (f1)
-		{
-			printf("Dosya-1: %s", f1);
-			free(f1);
-			f1 = get_next_line(fd1);
-		}
-		if (f2)
-		{
-			printf("Dosya-2: %s", f2);
-			free(f2);
-			f2 = get_next_line(fd2);
-		}
-	}
-	close(fd1);
-	close(fd2);
-	return (0);
-}
