@@ -42,7 +42,7 @@ The algorithm is based on a "Read-Check-Store" logic:
 
 ## Resources
 
-[www.educative.io](https://www.educative.io/answers/read-data-from-a-file-using-read-in-c) to learn the read() function.
+[educative.io](https://www.educative.io/answers/read-data-from-a-file-using-read-in-c) to learn the read() function.
 
 #### AI Usage Disclosure
 
