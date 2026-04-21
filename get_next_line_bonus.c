@@ -6,7 +6,7 @@
 /*   By: fulkaya <fulkaya@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 17:28:20 by fulkaya           #+#    #+#             */
-/*   Updated: 2026/04/18 16:09:48 by fulkaya          ###   ########.fr       */
+/*   Updated: 2026/04/21 22:24:19 by fulkaya          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*helper(char **stash, t_line *t)
+static char	*extract_line(char **stash, t_line *t)
 {
 	if (!t->result)
 	{
@@ -41,9 +41,11 @@ char	*helper(char **stash, t_line *t)
 	return (t->result);
 }
 
-void	helper2(int fd, char **stash, t_line *t)
+static void	fill_stash(int fd, char **stash, t_line *t)
 {
 	t->readed = read(fd, t->buffer, BUFFER_SIZE);
+	if (t->readed <= 0)
+		return ;
 	t->buffer[t->readed] = '\0';
 	if (*stash == NULL)
 		*stash = ft_strdup("");
@@ -52,7 +54,7 @@ void	helper2(int fd, char **stash, t_line *t)
 	*stash = t->temp;
 }
 
-char	*helper3(char **stash, t_line *t)
+static char	*get_remaining(char **stash, t_line *t)
 {
 	free (t->buffer);
 	if (*stash != NULL && **stash != '\0')
@@ -78,7 +80,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	while (t.readed > 0)
 	{
-		helper2(fd, &stash[fd], &t);
+		fill_stash(fd, &stash[fd], &t);
 		if (t.readed == -1)
 		{
 			free(t.buffer);
@@ -88,8 +90,8 @@ char	*get_next_line(int fd)
 		if (ft_strchr(stash[fd], '\n') != NULL)
 		{
 			t.result = malloc(ft_strchr2(stash[fd], '\n') + 2);
-			return (helper(&stash[fd], &t));
+			return (extract_line(&stash[fd], &t));
 		}
 	}
-	return (helper3(&stash[fd], &t));
+	return (get_remaining(&stash[fd], &t));
 }

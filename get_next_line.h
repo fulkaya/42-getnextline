@@ -6,7 +6,7 @@
 /*   By: fulkaya <fulkaya@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 19:15:11 by fulkaya           #+#    #+#             */
-/*   Updated: 2026/04/16 04:43:03 by fulkaya          ###   ########.fr       */
+/*   Updated: 2026/04/21 15:46:17 by fulkaya          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,5 @@ char	*get_next_line(int fd);
 
 int		ft_strlen(char *str);
 int		ft_strchr2(char *s, int c);
-
-void	ft_putstr_fd(char *s, int fd);
 
 #endif

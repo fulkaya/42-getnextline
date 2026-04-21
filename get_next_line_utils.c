@@ -6,7 +6,7 @@
 /*   By: fulkaya <fulkaya@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 19:49:30 by fulkaya           #+#    #+#             */
-/*   Updated: 2026/04/16 04:17:37 by fulkaya          ###   ########.fr       */
+/*   Updated: 2026/04/21 15:01:08 by fulkaya          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (res);
 }
 
-void	*ft_memcpy(void *dest, void *src, int n)
+static void	*ft_memcpy(void *dest, void *src, int n)
 {
 	unsigned char		*d;
 	unsigned char		*s;
